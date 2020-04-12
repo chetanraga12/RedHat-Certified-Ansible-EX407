@@ -1,0 +1,208 @@
+What is Ansible?
+========================
+	Config mgmt.
+	Release
+		Open Source - Free - Command line
+		Enter - Command line + GUI + Paid
+	Python
+	From Redhat
+	Agent less
+		
+
+What is Config mgt?
+	Server(S) Config mgmt.
+
+Where is there in Each server? of Which we manage a config...
+Resources
+	file	
+	dir
+	user
+	service
+	package
+	group
+	bash
+	batch
+	ps
+	yum
+	apt
+
+Using ansible -  you can modify a server(s) resources at large scale.
+====================================================================
+Why Ansible
+	Helps us to deploy or config mgmt at large many servers parrell.
+	Ansible is easy to learn - extend - test - debug - share compare to
+					Java - perl - python 
+	Ansible is platform inde...where as Bash is only for linux and PS is only Windows.
+	Ansble is IDEOMPotent	
+	
+Other tools - 
+	Ansible - Puppt - CHef 
+
+==================================================================
+Architecture of Ansible
+=============================================================
+ACS - Ansible Control Server 
+ARS - Ansible remote server.
+
+ACS	 ------------------- 	ARS 
+Linux 64 BIT			ANY
+		WINDOWS		WINRM (5985 and 5986)
+		LINUX		SSH (22)
+PYTHON		LINUX		PYTHON
+		WINDOWS		PS + DOT NET
+-----------------------------------------------
+Ansible				NOTHING
+ --Module
+ --Config
+Inventory
+Playbook
+
+How to work with Ansible?
+============================================
+Step 1 
+	Install Ansible
+
+Step 2
+	Create Adhoc Commands
+	Validate in Local Machine
+	Validate in remote Machine
+Step 3 
+	Create Playbook
+	Validate in Local Machine
+	Validate in remote Machine
+
+
+ACS - 13.233.227.167
+ARS - 13.235.0.37
+--------------------------------------
+How to install Ansuble in ACS?
+https://www.devopsschool.com/blog/how-to-install-ansible-in-centos-7-rhel-7/
+  20  ansible
+   21  ansible -h
+
+
+
+What is Adhoc Commands?
+==============================
+Cond 1- What if i want to do ONE thing in SERVER(S)
+		use adhoc commands
+Cond 1- What if i want to do MANY thing in SERVER(S)
+		use playbook
+
+Step 1 - First decide what you want to do?
+Step 2 - Find a Mdoule for each Steps
+	https://docs.ansible.com/ansible/latest/modules/modules_by_category.html
+
+1. install a httpd - yum
+ansible localhost -m yum -a"name=httpd state=installed" -b
+
+2. Create a index.html inside /var/www/html with content "Weclome to Ansible Class" - file
+ansible localhost -m file -a"path=/var/www/html/index.html state=touch" -b
+
+3. Start a web server - service
+ansible localhost -m service -a"name=httpd state=started" -b
+
+What is Modules?
+	Would do one thing.	
+	Such as Copy, remove, install, 
+
+
+1. install a httpd - yum
+ansible 13.235.0.37 -m yum -a"name=httpd state=installed" -b
+	------------
+	inventory
+
+ansible all -i 13.235.0.37, -m yum -a"name=httpd state=installed" -b -u ec2-user --key-file=remote.pem
+ansible all -i 13.235.0.37, -m file -a"path=/var/www/html/index.html state=touch" -b -u ec2-user --key-file=remote.pem
+ansible all -i 13.235.0.37, -m service -a"name=httpd state=started" -b -u ec2-user --key-file=remote.pem
+ansible all -i 13.235.0.37, -m copy -a"dest=/var/www/html/ src=index.html" -b -u ec2-user --key-file=remote.pem
+
+ansible all -i 13.235.0.37,13.235.0.37,13.235.0.37, -m yum -a"name=httpd state=installed" -b -u ec2-user --key-file=remote.pem
+ansible all -i 13.235.0.37, -m file -a"path=/var/www/html/index.html state=touch" -b -u ec2-user --key-file=remote.pem
+ansible all -i 13.235.0.37, -m service -a"name=httpd state=started" -b -u ec2-user --key-file=remote.pem
+ansible all -i 13.235.0.37, -m copy -a"dest=/var/www/html/ src=index.html" -b -u ec2-user --key-file=remote.pem
+
+
+ansible all -i inventory -m yum -a"name=httpd state=installed" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m file -a"path=/var/www/html/index.html state=touch" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m service -a"name=httpd state=started" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m copy -a"dest=/var/www/html/ src=index.html" -b -u ec2-user --key-file=remote.pem
+
+What is inventory?
+	LIST OF IP ADDRESS or
+	a file which has list of IP addree or
+	Script which return list of ip address
+			OF ARS	
+				
+
+ansible all -i inventory -m yum -a"name=httpd state=installed" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m file -a"path=/var/www/html/index.html state=touch" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m service -a"name=httpd state=started" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m copy -a"dest=/var/www/html/ src=index.html" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m yum -a"name=httpd state=installed" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m file -a"path=/var/www/html/index.html state=touch" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m service -a"name=httpd state=started" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m copy -a"dest=/var/www/html/ src=index.html" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m yum -a"name=httpd state=installed" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m file -a"path=/var/www/html/index.html state=touch" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m service -a"name=httpd state=started" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m copy -a"dest=/var/www/html/ src=index.html" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m yum -a"name=httpd state=installed" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m file -a"path=/var/www/html/index.html state=touch" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m service -a"name=httpd state=started" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m copy -a"dest=/var/www/html/ src=index.html" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m yum -a"name=httpd state=installed" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m file -a"path=/var/www/html/index.html state=touch" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m service -a"name=httpd state=started" -b -u ec2-user --key-file=remote.pem
+ansible all -i inventory -m copy -a"dest=/var/www/html/ src=index.html" -b -u ec2-user --key-file=remote.pem
+
+cUSTOME gROUP IN inVENTORY
+================================
+
+Playbook
+===========================
+	Has PLAY 1
+		HOST - Group name [web]
+		TASK(S)
+			TASK 1 - MODULE AND PARAM
+			TASK 2
+	Has PLAY 2
+	Has PLAY 3
+
+
+---
+- name: This sets up an httpd webserver
+  hosts: web
+  tasks:
+  - name: Install the httpd apps
+    yum: name=httpd state=installed
+  - name: start the httpd service
+    service: name=httpd state=started
+  - name: create a empty fle
+    file: dest=/opt/test.txt state=touch
+  - name: copy a file
+    copy: dest=/var/www/html/ src="index.html"
+
+
+
+ansible-playbook -i inventory web.yaml -b -u ec2-user --key-file=remote.pem
+
+
+
+Labs and Assignment - 
+https://www.devopsschool.com/blog/ansible-adhoc-commands-lab-excercise-part-1/
+https://www.devopsschool.com/blog/ansible-playbook-lab-excercise-part-3/
+ https://www.devopsschool.com/blog/ansible-playbook-lab-excercise-part-2/
+https://www.devopsschool.com/blog/ansible-windows-adhoc-commands-lab-excercise-part-3/
+
+Ansible  Variables 
+Ansible role
+
+
+
+
+
+
+
+
+

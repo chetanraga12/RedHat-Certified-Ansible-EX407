@@ -1,0 +1,71 @@
+- 
+Variables
+Template
+Handlers
+Roles
+
+=====================
+ACS
+15.206.186.33
+
+ARS
+13.234.66.217
+
+
+---
+- name: This sets up an httpd webserver
+  hosts: all
+  vars:
+    myname: "rajesh kumar"
+    package: "httpd"
+    service: "httpd"
+  tasks:
+  - name: Install the httpd apps
+    yum: name={{ package }} state=installed
+  - name: start the httpd service
+    service: name={{ service }} state=started
+  - name: create a empty fle
+    file: dest=/opt/test.txt state=touch
+  - name: copy a file
+    copy: dest=/var/www/html/ src="index.html"
+  - name: Ansible debug print example.
+    debug:
+      msg: "{{ myname }}"
+
+Vairable
+https://www.devopsschool.com/tutorial/ansible/variables/index.html
+
+
+ansible-playbook -i inventory play1.yaml -b -u ec2-user --key-file=node.pem
+=================================================================================
+Copy vs Template
+Copy  - As it is....
+Template  - its get interpolated.
+
+
+Handlers
+===========================
+	Are tasks but in diff sec
+	but it would execute only when you notify
+	AND CALLING TASK MUST HAVE CHANGES
+
+
+What is Roles?
+===========================================
+PLAYBOOK(S) - Multiple
+VARIABLES(S)  - Multiple
+HANDLERS(S) - Multiple
+TEMPLATE(S) - Multiple
+
+
+
+
+
+
+
+
+
+
+
+
+

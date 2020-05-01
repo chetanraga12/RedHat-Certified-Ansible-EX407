@@ -1,0 +1,310 @@
+What is Ansible?
+=====================================
+	Config mgmt tool.
+	Written in Python
+	Release
+		Open Source - Ansible CMD  - Free
+		Tower - Enterprise -  Ansible CMD + GUI - Paid
+	From Redhat
+	
+
+
+What is Config mgmt?
+=====================================
+Server(S) Config mgmt.
+
+What is there in server?
+=================================
+	resooruces		Property.
+------------------------------------------------------------
+	file
+	directory
+	user
+	group	
+	bash
+	batch
+	services
+	packages
+=================================
+
+Why Ansible?
+----------------------------------------
+	Config mgmt in LARGE Num SERVERS
+
+	Java-C+++perl+Python
+	NOT easy to learn,test,debug,extend,share etc.
+
+	Shell + ps
+	NOT cross platform
+
+	We need a tool which is easy learn,test,debug,extend,share etc
+	+
+	Cross Platform.
+
+=============================================
+Other tools
+	Ansible - Puppet - Chef - Salt
+
+
+==========================================================
+Architecture of Ansible
+
+ACS		ARS
+================================
+Linux		Any
+64 BIT		Any
+Ansible		NOthing
+	---WINDOWS - WINRM (PS3.0 + DOT NET4.5+)
+	---LINUX --- SSH (PYTHON)
+
+========================================
+Components of Ansile?(ACS)
+
+Ansible
+	Modules
+	Config		config file = /etc/ansible/ansible.cfg
+Inventory file
+Playbook
+
+=====================
+Ansible			TOOL
+	Modules		Modify ONE Resources.....ONE feature - One Action
+	Config		Ansible Config - Which you can modify.
+Inventory file		List of IP addres of ARS
+Playbook		Collection of tasks aka Modules.
+
+
+Modules - https://docs.ansible.com/ansible/latest/modules/modules_by_category.html
+
+===========================================================================
+How to Apply Modules in ARS?
+==================================
+	using ADHOC command 
+		Do one task in ONE MACHINE(localhost)
+		Do one task in ONE REMOTE MACHINE
+		Do one task in MULTIPLE REMOTE MACHINES using Inventory
+		Do one task in MULTIPLE REMOTE MACHINES using group in Inventory
+	using Playbook(Program)
+		Do Multiple tasks(Playbook) in ONE MACHINE(localhost)
+		Do Multiple tasks(Playbook) in ONE REMOTE MACHINE
+		Do Multiple tasks(Playbook) in MULTIPLE REMOTE MACHINE using Inventory
+		Do Multiple tasks(Playbook) in MULTIPLE REMOTE MACHINE using group in Inventory
+		Do Multiple tasks(Playbook) in MULTIPLE REMOTE MACHINE using group of group in Inventory
+		Do Multiple tasks(Playbook) in MULTIPLE REMOTE MACHINE using environment directory Inventory 
+
+===========================
+15.206.164.96		ACS
+35.154.199.133		ARS
+===========================
+
+
+How to install Ansible?
+https://www.devopsschool.com/blog/how-to-install-ansible-in-centos-7-rhel-7/
+$ sudo yum install wget -y
+$ wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+$ yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+$ sudo rpm -i epel-release-latest-7.noarch.rpm
+$ sudo yum update -y 
+$ sudo yum install ansible -y
+======================================
+
+Projects
+---------------
+setup a http servers
+==========================			Parameters
+1. Install a httpd server	yum	
+2. copy a index.html 		copy
+3. Start a httpd services.	service
+4. create a file in /tmp.	file
+
+
+
+
+ansible localhost -m file -a"path=devopsschool.txt state=touch"
+ansible localhost -m yum -a"name=httpd state=installed"
+ansible localhost -m copy -a"dest=/var/www/html src=index.html"
+ansible localhost -m service -a"name=httpd state=started"
+
+
+
+
+ansible all -i 35.154.199.133, -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible all -i 35.154.199.133, -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible all -i 35.154.199.133, -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible all -i 35.154.199.133, -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+
+-i ===	remote machine
+	Format can be
+		List of Ip addd				35.154.199.133,44.4.4.4,
+		file which has IP addrss sep by commna
+		Directory
+	
+
+How SSH authenticate?
+	user name & pass
+	username & KEY
+
+hOW TO GET MORE PRI?
+	SUDO?
+
+
+
+inventory
+================
+15.206.164.96
+35.154.199.133
+
+
+
+ansible all -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible all -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible all -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible all -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+
+
+inventory
+================
+
+[web]
+15.206.164.96
+35.154.199.133
+
+
+[db]
+2.3.3.3
+4.4.4.4
+5.5.5.5
+
+
+ansible web -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+
+=====================================================================================
+
+
+
+ansible web -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m file -a"path=index.html state=touch" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m yum -a"name=httpd state=installed" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m copy -a"dest=/var/www/html src=index.html" -u ec2-user --key-file=node.pem -b
+ansible web -i inventory -m service -a"name=httpd state=started" -u ec2-user --key-file=node.pem -b
+
+Solution
+===============
+playbook
+
+
+Playbook
+	play1
+		Hosts:
+		Tasks: 
+			task1 - Module name with param
+			task2 - Module name with param
+			task3 - Module name with param
+
+
+	play2
+
+		Hosts:
+		Tasks: 
+			task1 - Module name with param
+			task2 - Module name with param
+			task3 - Module name with param
+
+
+
+---
+- name: This sets up an httpd webserver
+  hosts: web
+  tasks:
+  - name: Install the httpd apps
+    yum: name=httpd
+  - name: start the httpd service
+    service: name=httpd state=started
+  - name: create a empty fle
+    file: dest=/opt/test.txt state=touch
+  - name: copy a file
+    copy: dest=/var/www/html/ src="index.html"
+
+
+
+ansible-playbook -i inventory -u ec2-user --key-file=node.pem -b playbook.yaml
+
+
+==========================================================
+https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters
+
+inventory
+================
+
+[web]
+15.206.164.96	ansible_user=ec2-user ansible_ssh_private_key_file=node.pem ansible_become=yes	
+35.154.199.133	ansible_user=ec2-user ansible_ssh_private_key_file=node.pem ansible_become=yes
+
+
+[db]
+2.3.3.3
+4.4.4.4
+5.5.5.5
+
+
+ansible-playbook -i inventory playbook.yaml
+
+
+
+
+inventory
+================
+
+[web]
+15.206.164.96	  	
+35.154.199.133	
+
+[db]
+2.3.3.3
+4.4.4.4
+5.5.5.5
+
+[web:vars]
+ansible_user=ec2-user
+ansible_ssh_private_key_file=node.pem
+ansible_become=yes
+
+[db:vars]
+ansible_user=ec2-user
+ansible_ssh_private_key_file=node.pem
+ansible_become=yes
+
+Assignment
+============================
+
+https://www.devopsschool.com/blog/ansible-adhoc-commands-lab-excercise-part-1/
+https://www.devopsschool.com/blog/ansible-playbook-lab-excercise-part-2/
+https://www.devopsschool.com/blog/ansible-playbook-lab-excercise-part-3/
+
+
